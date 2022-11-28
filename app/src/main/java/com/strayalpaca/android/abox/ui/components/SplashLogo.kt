@@ -13,6 +13,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,11 +21,14 @@ import com.strayalpaca.android.abox.R
 
 
 @Composable
-fun SplashLogo(animationDuration : Int = 500) {
+fun SplashLogo(animationDuration: Int = 500) {
     val animationOffset = remember { Animatable(1f) }
 
     LaunchedEffect(animationOffset) {
-        animationOffset.animateTo(targetValue = 0f, animationSpec = tween(durationMillis = animationDuration))
+        animationOffset.animateTo(
+            targetValue = 0f,
+            animationSpec = tween(durationMillis = animationDuration)
+        )
     }
 
     Column(
@@ -42,14 +46,19 @@ fun SplashLogo(animationDuration : Int = 500) {
                 Image(
                     painter = painterResource(id = R.drawable.image_a),
                     contentDescription = "A in Logo",
-                    modifier = Modifier.width(108.dp).offset(y = -(100 * animationOffset.value).dp)
+                    modifier = Modifier
+                        .width(108.dp)
+                        .offset(y = -(100 * animationOffset.value).dp),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
                 )
                 Image(
                     painter = painterResource(id = R.drawable.image_b),
                     contentDescription = "B in Logo",
                     modifier = Modifier
                         .width(108.dp)
-                        .align(Alignment.Bottom).offset(y = (100 * animationOffset.value).dp)
+                        .align(Alignment.Bottom)
+                        .offset(y = (100 * animationOffset.value).dp),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
                 )
             }
         }
@@ -68,13 +77,18 @@ fun SplashLogo(animationDuration : Int = 500) {
                     contentDescription = "O in Logo",
                     modifier = Modifier
                         .width(108.dp)
-                        .align(Alignment.Bottom).offset(y = (100 * animationOffset.value).dp)
+                        .align(Alignment.Bottom)
+                        .offset(y = (100 * animationOffset.value).dp),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
                 )
 
                 Image(
                     painter = painterResource(id = R.drawable.image_x),
                     contentDescription = "X in Logo",
-                    modifier = Modifier.width(108.dp).offset(y = -(100 * animationOffset.value).dp)
+                    modifier = Modifier
+                        .width(108.dp)
+                        .offset(y = -(100 * animationOffset.value).dp),
+                    colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
                 )
             }
         }

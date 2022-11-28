@@ -39,6 +39,7 @@ fun PostItem(symbolColor: String = "#402B25") {
                 .constrainAs(card) {
 
                 }
+                .padding(1.dp)
         ) {
             Box(
                 Modifier
