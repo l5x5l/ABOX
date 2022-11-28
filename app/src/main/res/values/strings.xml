@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">ABOX</string>
+    <string name="AvsB_category">A vs B</string>
+    <string name="OXQuiz_category">OX Quiz</string>
+    <string name="Random_category">Random</string>
+    <string name="bookmark_category">북마크</string>
+
+    <string name="description_AvsB_category">마지막 하나가 남을 때까지!</string>
+    <string name="description_OXQuiz_category">간단하게 풀어보는 심플한 문제들</string>
+    <string name="description_random_category">모든 AvsB, OX Quiz중 하나</string>
+    <string name="description_bookmark_category">북마크한 AvsB 목록</string>
+
+    <string name="weekly_top_10">이번주 Top 10!</string>
+    <string name="new_AvsB">새로 등록된 AvsB</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.strayalpaca.android.abox.ui.screens.splash
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.strayalpaca.android.abox.ui.components.SplashLogo
+import com.strayalpaca.android.abox.ui.screens.home.HomeActivity
 
 @SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
@@ -43,8 +45,8 @@ class SplashActivity : ComponentActivity() {
     private fun moveToHome() {
         lifecycleScope.launch {
             delay(1500)
-//            val intent = Intent(this@SplashActivity, HomeActivity::class.java)
-//            startActivity(intent)
+            val intent = Intent(this@SplashActivity, HomeActivity::class.java)
+            startActivity(intent)
         }
     }
 }
