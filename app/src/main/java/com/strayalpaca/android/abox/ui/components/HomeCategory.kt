@@ -26,10 +26,15 @@ import com.strayalpaca.android.abox.R
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
 
 @Composable
-fun HomeCategory(categoryTitle: String, categoryDescription: String) {
+fun HomeCategory(
+    categoryTitle: String,
+    categoryDescription: String,
+    modifier: Modifier = Modifier
+) {
     Surface(
         shape = RoundedCornerShape(16.dp),
         border = BorderStroke(width = 1.dp, MaterialTheme.colors.onBackground),
+        modifier = modifier
     ) {
         Column(
             modifier = Modifier
@@ -81,12 +86,18 @@ fun HomeCategoryList() {
                     .wrapContentHeight(),
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                Box(modifier = Modifier.weight(1f)) {
-                    HomeCategory(stringResource(id = R.string.AvsB_category), stringResource(id = R.string.description_AvsB_category))
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    HomeCategory(stringResource(id = R.string.OXQuiz_category), stringResource(id = R.string.description_OXQuiz_category))
-                }
+                HomeCategory(
+                    stringResource(id = R.string.AvsB_category),
+                    stringResource(id = R.string.description_AvsB_category),
+                    modifier = Modifier.weight(1f)
+                )
+
+                HomeCategory(
+                    stringResource(id = R.string.OXQuiz_category),
+                    stringResource(id = R.string.description_OXQuiz_category),
+                    modifier = Modifier.weight(1f)
+                )
+
             }
 
             Row(
@@ -96,12 +107,19 @@ fun HomeCategoryList() {
                     .wrapContentHeight(),
                 horizontalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                Box(modifier = Modifier.weight(1f)) {
-                    HomeCategory(stringResource(id = R.string.Random_category), stringResource(id = R.string.description_random_category))
-                }
-                Box(modifier = Modifier.weight(1f)) {
-                    HomeCategory(stringResource(id = R.string.bookmark_category), stringResource(id = R.string.description_bookmark_category))
-                }
+
+                HomeCategory(
+                    stringResource(id = R.string.Random_category),
+                    stringResource(id = R.string.description_random_category),
+                    modifier = Modifier.weight(1f)
+                )
+
+                HomeCategory(
+                    stringResource(id = R.string.bookmark_category),
+                    stringResource(id = R.string.description_bookmark_category),
+                    modifier = Modifier.weight(1f)
+                )
+
             }
         }
 
@@ -120,7 +138,6 @@ fun HomeCategoryList() {
         }
     }
 }
-
 
 
 @Preview(showBackground = true)
@@ -146,12 +163,19 @@ fun HomeCategoryNoAnimation() {
                         .wrapContentHeight(),
                     horizontalArrangement = Arrangement.spacedBy(20.dp),
                 ) {
-                    Box(modifier = Modifier.weight(1f)) {
-                        HomeCategory(stringResource(id = R.string.AvsB_category), stringResource(id = R.string.description_AvsB_category))
-                    }
-                    Box(modifier = Modifier.weight(1f)) {
-                        HomeCategory(stringResource(id = R.string.OXQuiz_category), stringResource(id = R.string.description_OXQuiz_category))
-                    }
+
+                    HomeCategory(
+                        stringResource(id = R.string.AvsB_category),
+                        stringResource(id = R.string.description_AvsB_category),
+                        modifier = Modifier.weight(1f)
+                    )
+
+                    HomeCategory(
+                        stringResource(id = R.string.OXQuiz_category),
+                        stringResource(id = R.string.description_OXQuiz_category),
+                        modifier = Modifier.weight(1f)
+                    )
+
                 }
 
                 Row(
@@ -161,12 +185,20 @@ fun HomeCategoryNoAnimation() {
                         .wrapContentHeight(),
                     horizontalArrangement = Arrangement.spacedBy(20.dp)
                 ) {
-                    Box(modifier = Modifier.weight(1f)) {
-                        HomeCategory(stringResource(id = R.string.Random_category), stringResource(id = R.string.description_random_category))
-                    }
-                    Box(modifier = Modifier.weight(1f)) {
-                        HomeCategory(stringResource(id = R.string.bookmark_category), stringResource(id = R.string.description_bookmark_category))
-                    }
+
+                    HomeCategory(
+                        stringResource(id = R.string.Random_category),
+                        stringResource(id = R.string.description_random_category),
+                        modifier = Modifier.weight(1f)
+                    )
+
+
+                    HomeCategory(
+                        stringResource(id = R.string.bookmark_category),
+                        stringResource(id = R.string.description_bookmark_category),
+                        modifier = Modifier.weight(1f)
+                    )
+
                 }
             }
 
