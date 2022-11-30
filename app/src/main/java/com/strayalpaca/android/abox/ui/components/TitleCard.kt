@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -81,13 +80,13 @@ fun TitleCard(imageWidth: Int = 255, symbolColor : String = "#402B25") {
                     width = Dimension.fillToConstraints
                 }
         ) {
-            Text(text = "카테고리 테스트", modifier = Modifier.padding(20.dp), fontSize = 28.sp, fontWeight = FontWeight.Bold, color = Color(textColor))
+            Text(text = "카테고리 테스트", modifier = Modifier.padding(20.dp), style = MaterialTheme.typography.h2, color = Color(textColor))
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "돌아가기", modifier = Modifier.padding(20.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color(textColor))
-                Text(text = "시작하기", modifier = Modifier.padding(20.dp), fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Color(textColor))
+                Text(text = "돌아가기", modifier = Modifier.padding(20.dp), style = MaterialTheme.typography.h3, color = Color(textColor))
+                Text(text = "시작하기", modifier = Modifier.padding(20.dp), style = MaterialTheme.typography.h3, color = Color(textColor))
             }
         }
     }

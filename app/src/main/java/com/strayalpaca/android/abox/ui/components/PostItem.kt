@@ -75,8 +75,7 @@ fun PostItem(post: Post) {
                 modifier = Modifier
                     .padding(12.dp)
                     .fillMaxWidth(),
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.h4,
                 color = Color(textColor),
                 maxLines = 2
             )

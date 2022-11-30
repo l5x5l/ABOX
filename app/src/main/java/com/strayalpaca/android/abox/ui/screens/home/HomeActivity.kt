@@ -56,9 +56,8 @@ class HomeActivity : ComponentActivity() {
 
                     Text(
                         text = stringResource(id = R.string.weekly_top_10),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
                         modifier = Modifier.padding(start = 20.dp),
+                        style = MaterialTheme.typography.h3,
                         color = MaterialTheme.colors.onBackground
                     )
                     LazyRow(
@@ -76,9 +75,8 @@ class HomeActivity : ComponentActivity() {
 
                     Text(
                         text = stringResource(id = R.string.new_AvsB),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
                         modifier = Modifier.padding(top = 68.dp, start = 20.dp),
+                        style = MaterialTheme.typography.h3,
                         color = MaterialTheme.colors.onBackground
                     )
                     LazyRow(
