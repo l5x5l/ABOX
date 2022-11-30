@@ -11,20 +11,21 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import com.strayalpaca.android.abox.ui.theme.ABOXTheme
+import coil.compose.AsyncImage
 import com.strayalpaca.android.abox.util.changeColorStringToInt
 import com.strayalpaca.android.abox.util.getTextColorByBackground
+import com.strayalpaca.android.domain.model.Post
 
 @Composable
-fun PostItem(symbolColor: String = "#402B25") {
-    val symbolColorInt = changeColorStringToInt(symbolColor)
+fun PostItem(post: Post) {
+    val symbolColorInt = changeColorStringToInt(post.primaryColor)
     val textColor = getTextColorByBackground(symbolColorInt)
 
     ConstraintLayout(modifier = Modifier.wrapContentSize()) {
@@ -46,10 +47,13 @@ fun PostItem(symbolColor: String = "#402B25") {
                     .fillMaxSize()
                     .padding(20.dp)
             ) {
-                Box(
+                AsyncImage(
+                    model = post.thumbnailUrl,
+                    contentDescription = "thumbnail Image of post",
                     modifier = Modifier
                         .fillMaxSize()
-                        .border(1.dp, MaterialTheme.colors.onSurface)
+                        .border(1.dp, MaterialTheme.colors.onSurface),
+                    contentScale = ContentScale.Crop
                 )
             }
         }
@@ -59,56 +63,23 @@ fun PostItem(symbolColor: String = "#402B25") {
             modifier = Modifier
                 .zIndex(1f)
                 .background(color = Color(symbolColorInt))
-                .constrainAs(title){
+                .constrainAs(title) {
                     start.linkTo(card.start)
                     end.linkTo(card.end)
                     bottom.linkTo(card.bottom, margin = 40.dp)
                     width = Dimension.fillToConstraints
                 }
         ) {
-            Text(text = "카테고리 테스트\n테스트\nxptmxm", modifier = Modifier.padding(12.dp).fillMaxWidth(), fontSize = 14.sp, fontWeight = FontWeight.Bold, color = Color(textColor), maxLines = 2)
-        }
-    }
-
-}
-
-@Preview
-@Composable
-fun PostItemPreview() {
-    ABOXTheme {
-        Column(modifier = Modifier
-            .background(MaterialTheme.colors.background)
-            .fillMaxSize()
-            .padding(horizontal = 20.dp, vertical = 24.dp)) {
-
-            Row(
+            Text(
+                text = post.title,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                horizontalArrangement = Arrangement.spacedBy(20.dp),
-            ) {
-                Box(modifier = Modifier.weight(1f)){
-                    PostItem()
-                }
-                Box(modifier = Modifier.weight(1f)){
-                    PostItem()
-                }
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 20.dp)
-                    .wrapContentHeight(),
-                horizontalArrangement = Arrangement.spacedBy(20.dp)
-            ) {
-                Box(modifier = Modifier.weight(1f)){
-                    PostItem()
-                }
-                Box(modifier = Modifier.weight(1f)){
-                    PostItem()
-                }
-            }
+                    .padding(12.dp)
+                    .fillMaxWidth(),
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(textColor),
+                maxLines = 2
+            )
         }
     }
 }

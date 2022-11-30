@@ -1,5 +1,6 @@
 package com.strayalpaca.android.abox.ui.components
 
+import android.content.Intent
 import android.content.res.Configuration
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.tween
@@ -17,19 +18,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.strayalpaca.android.abox.R
+import com.strayalpaca.android.abox.ui.screens.avsb_list.AvsBListActivity
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
+import com.strayalpaca.android.abox.util.findActivity
 
 @Composable
 fun HomeCategory(
     categoryTitle: String,
     categoryDescription: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    clickEvent : () -> Unit,
 ) {
     Surface(
         shape = RoundedCornerShape(16.dp),
@@ -40,7 +45,7 @@ fun HomeCategory(
             modifier = Modifier
                 .aspectRatio(1f)
                 .clickable {
-
+                    clickEvent()
                 }
                 .background(MaterialTheme.colors.background)
         ) {
@@ -63,6 +68,7 @@ fun HomeCategoryList() {
     val circleSize = LocalConfiguration.current.screenWidthDp * 1.2
     val shadowColor = MaterialTheme.colors.onBackground.copy(alpha = 0.05f)
     val animationValue = remember { Animatable(0f) }
+    val activity = LocalContext.current.findActivity()
 
     LaunchedEffect(animationValue) {
         animationValue.animateTo(
@@ -89,13 +95,21 @@ fun HomeCategoryList() {
                 HomeCategory(
                     stringResource(id = R.string.AvsB_category),
                     stringResource(id = R.string.description_AvsB_category),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    clickEvent = {
+                        val intent = Intent(activity, AvsBListActivity::class.java)
+                        activity.startActivity(intent)
+                    }
                 )
 
                 HomeCategory(
                     stringResource(id = R.string.OXQuiz_category),
                     stringResource(id = R.string.description_OXQuiz_category),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    clickEvent = {
+                        val intent = Intent(activity, AvsBListActivity::class.java)
+                        activity.startActivity(intent)
+                    }
                 )
 
             }
@@ -111,13 +125,21 @@ fun HomeCategoryList() {
                 HomeCategory(
                     stringResource(id = R.string.Random_category),
                     stringResource(id = R.string.description_random_category),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    clickEvent = {
+                        val intent = Intent(activity, AvsBListActivity::class.java)
+                        activity.startActivity(intent)
+                    }
                 )
 
                 HomeCategory(
                     stringResource(id = R.string.bookmark_category),
                     stringResource(id = R.string.description_bookmark_category),
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    clickEvent = {
+                        val intent = Intent(activity, AvsBListActivity::class.java)
+                        activity.startActivity(intent)
+                    }
                 )
 
             }
@@ -167,13 +189,19 @@ fun HomeCategoryNoAnimation() {
                     HomeCategory(
                         stringResource(id = R.string.AvsB_category),
                         stringResource(id = R.string.description_AvsB_category),
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        clickEvent = {
+
+                        }
                     )
 
                     HomeCategory(
                         stringResource(id = R.string.OXQuiz_category),
                         stringResource(id = R.string.description_OXQuiz_category),
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        clickEvent = {
+
+                        }
                     )
 
                 }
@@ -189,14 +217,20 @@ fun HomeCategoryNoAnimation() {
                     HomeCategory(
                         stringResource(id = R.string.Random_category),
                         stringResource(id = R.string.description_random_category),
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        clickEvent = {
+
+                        }
                     )
 
 
                     HomeCategory(
                         stringResource(id = R.string.bookmark_category),
                         stringResource(id = R.string.description_bookmark_category),
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
+                        clickEvent = {
+
+                        }
                     )
 
                 }
