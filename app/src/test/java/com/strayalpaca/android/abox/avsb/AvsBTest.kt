@@ -19,7 +19,7 @@ class AvsBTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `After Load AvsB, Amount of AvsB's First round Item is powers of 2`() {
-        runTest(mainCoroutineRule.testDispatcher) {
+        runTest {
             val viewModel = AvsBViewModel(UseCaseGetAvsB(AvsBTestRepository()))
             viewModel.getAvsB()
             advanceUntilIdle()
