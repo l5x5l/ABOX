@@ -24,34 +24,31 @@ class AvsBTest {
             viewModel.getAvsB()
             advanceUntilIdle()
 
-            viewModel.ab.value?.createFirstRoundContent()
-
             val expected = 8
-            assertEquals(expected, viewModel.ab.value?.abContentList?.size)
+            assertEquals(expected, viewModel.ab?.abContentList?.size)
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `After Finish single round, Next Round will be created`() {
-        runTest(mainCoroutineRule.testDispatcher) {
+        runTest {
             val viewModel = AvsBViewModel(UseCaseGetAvsB(AvsBTestRepository()))
             viewModel.getAvsB()
             advanceUntilIdle()
 
-            viewModel.ab.value?.createFirstRoundContent()
-            while(viewModel.ab.value?.abContentList?.size!! > 0) {
-                viewModel.onSwipeToLeft(viewModel.ab.value!!.abContentList[0])
+            while(viewModel.ab?.abContentList?.size!! > 0) {
+                viewModel.onSwipeToLeft(viewModel.ab!!.abContentList[0])
             }
             viewModel.onStackEmpty()
 
-            while(viewModel.ab.value?.abContentList?.size!! > 0) {
-                viewModel.onSwipeToLeft(viewModel.ab.value!!.abContentList[0])
+            while(viewModel.ab?.abContentList?.size!! > 0) {
+                viewModel.onSwipeToLeft(viewModel.ab!!.abContentList[0])
             }
             viewModel.onStackEmpty()
 
             val expected = 2
-            assertEquals(expected, viewModel.ab.value?.abContentList?.size)
+            assertEquals(expected, viewModel.ab?.abContentList?.size)
         }
     }
 
