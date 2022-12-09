@@ -26,6 +26,7 @@
         </activity>
         <activity android:name=".ui.screens.home.HomeActivity"/>
         <activity android:name=".ui.screens.avsb_list.AvsBListActivity"/>
+        <activity android:name=".ui.screens.avsb.AvsBActivity"/>
     </application>
 
 </manifest>

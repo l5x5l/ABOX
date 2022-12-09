@@ -1,8 +1,10 @@
 package com.strayalpaca.android.abox.ui.components
 
+import android.content.Intent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
@@ -12,14 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
+import com.strayalpaca.android.abox.ui.screens.avsb.AvsBActivity
 import com.strayalpaca.android.abox.util.changeColorStringToInt
+import com.strayalpaca.android.abox.util.findActivity
 import com.strayalpaca.android.abox.util.getTextColorByBackground
 import com.strayalpaca.android.domain.model.Post
 
@@ -27,8 +30,12 @@ import com.strayalpaca.android.domain.model.Post
 fun PostItem(post: Post) {
     val symbolColorInt = changeColorStringToInt(post.primaryColor)
     val textColor = getTextColorByBackground(symbolColorInt)
+    val context = LocalContext.current.findActivity()
 
-    ConstraintLayout(modifier = Modifier.wrapContentSize()) {
+    ConstraintLayout(modifier = Modifier.wrapContentSize().clickable {
+        val intent = Intent(context, AvsBActivity::class.java)
+        context.startActivity(intent)
+    }) {
         val (card, title) = createRefs()
 
         Surface(

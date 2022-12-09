@@ -15,7 +15,7 @@ class AvsB(
 
     val abContentList : MutableList<AvsBContent> = mutableListOf()
     private val votedAbContentList : MutableList<AvsBContent> = mutableListOf()
-    private var currentRound = 16
+    var currentRound = 16
 
     fun createFirstRoundContent() {
         currentRound = getMax2Powers(itemList.size)

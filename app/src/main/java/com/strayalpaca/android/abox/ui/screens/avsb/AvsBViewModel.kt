@@ -17,27 +17,46 @@ import javax.inject.Inject
 class AvsBViewModel @Inject constructor(
     private val useCaseGetAvsB: UseCaseGetAvsB
 ) : ViewModel(), SwipeStackListener<AvsBContent> {
-    private val _ab = MutableStateFlow<AvsB?>(null)
-    val ab = _ab.asStateFlow()
+    var ab: AvsB? = null
+
+    private val _abContentList = MutableStateFlow<List<AvsBContent>>(listOf())
+    val abContentList = _abContentList.asStateFlow()
+
+    private val _currentPosition = MutableStateFlow(0)
+    val currentPosition = _currentPosition.asStateFlow()
+
+    private val _currentABRound = MutableStateFlow(0)
+    val currentABRound = _currentABRound.asStateFlow()
 
     fun getAvsB() {
         viewModelScope.launch {
             val result = useCaseGetAvsB(1)
-            _ab.value = result
+            ab = result
+            ab!!.createFirstRoundContent()
+            changeRound()
         }
     }
 
     override fun onSwipeToLeft(item: AvsBContent) {
         item.vote = AB.A
-        ab.value!!.addVoteData(item)
+        ab!!.addVoteData(item)
+        _currentPosition.value += 1
     }
 
     override fun onSwipeToRight(item: AvsBContent) {
         item.vote = AB.B
-        ab.value!!.addVoteData(item)
+        ab!!.addVoteData(item)
+        _currentPosition.value += 1
     }
 
     override fun onStackEmpty() {
-        ab.value!!.createNextRoundContent()
+        ab!!.createNextRoundContent()
+        changeRound()
+    }
+
+    private fun changeRound() {
+        _abContentList.value = ab!!.abContentList
+        _currentABRound.value = ab!!.currentRound
+        _currentPosition.value = 0
     }
 }
