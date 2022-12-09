@@ -26,10 +26,9 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-const val STACK_SIZE = 3
 const val BOTTOM_POSITION = 2
 const val TOP_POSITION = 0
-const val STACK_INTERVAL_Y = 40f
+const val STACK_INTERVAL_Y = 16f
 const val STACK_ANIMATION_DURATION = 500
 
 @SuppressLint("ReturnFromAwaitPointerEventScope", "MultipleAwaitPointerEventScopes")

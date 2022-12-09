@@ -79,7 +79,7 @@ fun RoundNumberPreview() {
                 Text(text = "Next Position")
             }
 
-            ListDot(amountOfItem = currentRound.value / 2, currentPosition = currentPosition.value, modifier = Modifier.align(Alignment.CenterHorizontally))
+            ListDot(round = currentRound.value, currentPosition = currentPosition.value, modifier = Modifier.align(Alignment.CenterHorizontally))
         }
     }
 }
