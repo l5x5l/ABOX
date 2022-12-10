@@ -6,9 +6,12 @@ import com.strayalpaca.android.abox.ui.components.swipeStack.SwipeStackListener
 import com.strayalpaca.android.domain.model.AB
 import com.strayalpaca.android.domain.model.AvsB
 import com.strayalpaca.android.domain.model.AvsBContent
+import com.strayalpaca.android.domain.model.SwipeOrientation
 import com.strayalpaca.android.domain.usecase.UseCaseGetAvsB
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -27,6 +30,13 @@ class AvsBViewModel @Inject constructor(
 
     private val _currentABRound = MutableStateFlow(0)
     val currentABRound = _currentABRound.asStateFlow()
+
+    private val _swipeOrientation = MutableSharedFlow<SwipeOrientation>()
+    val swipeOrientation = _swipeOrientation.asSharedFlow()
+
+    init {
+        getAvsB()
+    }
 
     fun getAvsB() {
         viewModelScope.launch {
@@ -52,6 +62,12 @@ class AvsBViewModel @Inject constructor(
     override fun onStackEmpty() {
         ab!!.createNextRoundContent()
         changeRound()
+    }
+
+    override fun onSwipeAnimationStart(swipeOrientation: SwipeOrientation) {
+        viewModelScope.launch {
+            _swipeOrientation.emit(swipeOrientation)
+        }
     }
 
     private fun changeRound() {

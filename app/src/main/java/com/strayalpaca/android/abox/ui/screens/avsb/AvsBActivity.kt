@@ -5,8 +5,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -17,11 +21,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.strayalpaca.android.abox.ui.components.BackButton
 import com.strayalpaca.android.abox.ui.components.ListDot
 import com.strayalpaca.android.abox.ui.components.RoundNumber
 import com.strayalpaca.android.abox.ui.components.swipeStack.SwipeStack
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
+import com.strayalpaca.android.domain.model.SwipeOrientation
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AvsBActivity : ComponentActivity() {
@@ -29,8 +36,6 @@ class AvsBActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        viewModel.getAvsB()
 
         setContent {
             val currentPosition = viewModel.currentPosition.collectAsState()
@@ -42,10 +47,39 @@ class AvsBActivity : ComponentActivity() {
             val aCircleScale = remember { Animatable(1f) }
             val bCircleScale = remember { Animatable(1f) }
 
-            ABOXTheme {
-                Box(){
+            LaunchedEffect(Unit) {
+                viewModel.swipeOrientation.collect{ orientation ->
+                    when (orientation) {
+                        SwipeOrientation.LEFT -> {
+                            launch {
+                                aCircleAlpha.animateTo(targetValue = 0f, animationSpec = tween(500))
+                                aCircleAlpha.animateTo(targetValue = 1f, animationSpec = tween(500))
+                            }
+                            launch {
+                                aCircleScale.animateTo(targetValue = 10f, animationSpec = tween(500))
+                                aCircleScale.snapTo(0f)
+                                aCircleScale.animateTo(targetValue = 1f, animationSpec = tween(500))
+                            }
+                        }
 
-                    // back button
+                        SwipeOrientation.RIGHT -> {
+                            launch {
+                                bCircleAlpha.animateTo(targetValue = 0f, animationSpec = tween(500))
+                                bCircleAlpha.animateTo(targetValue = 1f, animationSpec = tween(500))
+                            }
+                            launch {
+                                bCircleScale.animateTo(targetValue = 10f, animationSpec = tween(500))
+                                bCircleScale.snapTo(0f)
+                                bCircleScale.animateTo(targetValue = 1f, animationSpec = tween(500))
+                            }
+                        }
+                    }
+                }
+            }
+
+            ABOXTheme {
+                Box(modifier = Modifier.background(MaterialTheme.colors.background)) {
+                    BackButton(modifier = Modifier.align(Alignment.TopStart))
 
                     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                         val (stack, roundNumber, dotList, aCircle, bCircle) = createRefs()
@@ -123,7 +157,6 @@ class AvsBActivity : ComponentActivity() {
                         )
                     }
 
-                    // middle circle 2개
                 }
             }
         }

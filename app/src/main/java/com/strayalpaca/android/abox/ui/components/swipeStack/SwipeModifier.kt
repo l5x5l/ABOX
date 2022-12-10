@@ -21,6 +21,7 @@ import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.unit.IntOffset
 import com.strayalpaca.android.abox.util.getWindowWidth
+import com.strayalpaca.android.domain.model.SwipeOrientation
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
@@ -97,9 +98,11 @@ fun <T> Modifier.swipe(
                         canGesture.value = false
                         launch {
                             if (targetOffsetX < 0) {
+                                swipeStackListener.onSwipeAnimationStart(SwipeOrientation.LEFT)
                                 offsetX.animateTo(targetValue = -(screenWidth * 1.5f))
                                 swipeStackListener.onSwipeToLeft(item)
                             } else {
+                                swipeStackListener.onSwipeAnimationStart(SwipeOrientation.RIGHT)
                                 offsetX.animateTo(targetValue = (screenWidth * 1.5f))
                                 swipeStackListener.onSwipeToRight(item)
                             }

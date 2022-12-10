@@ -16,6 +16,7 @@ import com.strayalpaca.android.abox.ui.components.AvsBCard
 import com.strayalpaca.android.abox.ui.components.PostCard
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
 import com.strayalpaca.android.domain.model.AvsBContent
+import com.strayalpaca.android.domain.model.SwipeOrientation
 
 @Composable
 fun <T> SwipeStack(
@@ -59,6 +60,10 @@ fun SwipeStackPreview() {
 
         override fun onStackEmpty() {
             data.addAll(mutableStateListOf(11, 12, 13, 14, 15, 16, 17))
+        }
+
+        override fun onSwipeAnimationStart(swipeOrientation: SwipeOrientation) {
+
         }
     }
 
