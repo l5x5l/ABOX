@@ -12,31 +12,24 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
-import com.strayalpaca.android.abox.ui.components.AvsBCard
 import com.strayalpaca.android.abox.ui.components.PostCard
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
-import com.strayalpaca.android.domain.model.AvsBContent
 import com.strayalpaca.android.domain.model.SwipeOrientation
 
 @Composable
 fun <T> SwipeStack(
     dataList: List<T>,
     swipeStackListener: SwipeStackListener<T>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    content: @Composable (Modifier, T) -> Unit
 ) {
     for (i: Int in 0..BOTTOM_POSITION) {
         if (i < dataList.size) {
-            key(dataList[i]) {
-                if (dataList[i] is AvsBContent) {
-                    AvsBCard(modifier = modifier
-                        .swipe(swipeStackListener, i, dataList[i], dataList.size == 1)
-                        .zIndex(3f - i), AvsB = dataList[i] as AvsBContent)
-                } else {
-                    PostCard(modifier = modifier
-                        .swipe(swipeStackListener, i, dataList[i], dataList.size == 1)
-                        .zIndex(3f - i))
-                }
-            }
+            content(
+                modifier
+                    .swipe(swipeStackListener, i, dataList[i], dataList.size == 1)
+                    .zIndex(3f - i), dataList[i]
+            )
         }
     }
 }
@@ -73,8 +66,17 @@ fun SwipeStackPreview() {
                 .fillMaxSize()
                 .background(MaterialTheme.colors.onBackground)
         ) {
-            SwipeStack(dataList = data, swipeStackListener = swipeStackListener, modifier = Modifier.align(
-                Alignment.Center))
+            SwipeStack(
+                dataList = data, swipeStackListener = swipeStackListener, modifier = Modifier.align(
+                    Alignment.Center
+                )
+            ) { modifier: Modifier, i: Int ->
+                key(i) {
+                    PostCard(
+                        modifier = modifier
+                    )
+                }
+            }
         }
     }
 }

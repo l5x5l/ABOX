@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.key
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.strayalpaca.android.abox.ui.components.AvsBCard
 import com.strayalpaca.android.abox.ui.components.BackButton
 import com.strayalpaca.android.abox.ui.components.ListDot
 import com.strayalpaca.android.abox.ui.components.RoundNumber
@@ -132,7 +134,14 @@ class AvsBActivity : ComponentActivity() {
                                 dataList = abContent.value,
                                 swipeStackListener = viewModel,
                                 modifier = Modifier.align(Alignment.Center)
-                            )
+                            ) { modifier, avsBContent ->
+                                key(avsBContent) {
+                                    AvsBCard(
+                                        modifier = modifier,
+                                        AvsB = avsBContent
+                                    )
+                                }
+                            }
                         }
 
                         RoundNumber(
