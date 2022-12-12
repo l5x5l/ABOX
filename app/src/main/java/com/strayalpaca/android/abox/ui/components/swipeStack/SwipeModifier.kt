@@ -20,6 +20,10 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.input.pointer.util.VelocityTracker
 import androidx.compose.ui.unit.IntOffset
+import com.strayalpaca.android.abox.model.const.STACK_BOTTOM_POSITION
+import com.strayalpaca.android.abox.model.const.STACK_ANIMATION_DURATION
+import com.strayalpaca.android.abox.model.const.STACK_ITEM_OFFSET_INTERVAL_Y
+import com.strayalpaca.android.abox.model.const.STACK_TOP_POSITION
 import com.strayalpaca.android.abox.util.getWindowWidth
 import com.strayalpaca.android.domain.model.SwipeOrientation
 import kotlinx.coroutines.coroutineScope
@@ -27,10 +31,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 import kotlin.math.roundToInt
 
-const val BOTTOM_POSITION = 2
-const val TOP_POSITION = 0
-const val STACK_INTERVAL_Y = 16f
-const val STACK_ANIMATION_DURATION = 500
+
 
 @SuppressLint("ReturnFromAwaitPointerEventScope", "MultipleAwaitPointerEventScopes")
 fun <T> Modifier.swipe(
@@ -41,17 +42,17 @@ fun <T> Modifier.swipe(
 ): Modifier =
     composed {
         val offsetX = remember { Animatable(0f) }
-        val offsetY = remember { Animatable(STACK_INTERVAL_Y * (itemPosition + 1)) }
-        val alpha = remember { Animatable(if (itemPosition == BOTTOM_POSITION) 0f else 1f) }
+        val offsetY = remember { Animatable(STACK_ITEM_OFFSET_INTERVAL_Y * (itemPosition + 1)) }
+        val alpha = remember { Animatable(if (itemPosition == STACK_BOTTOM_POSITION) 0f else 1f) }
         val screenWidth = getWindowWidth()
         val rotateAnglePerOffsetX = 15 / screenWidth
         val canGesture = remember { mutableStateOf(true) }
 
         LaunchedEffect(itemPosition) {
             launch {
-                offsetY.animateTo(STACK_INTERVAL_Y * itemPosition, tween(STACK_ANIMATION_DURATION))
+                offsetY.animateTo(STACK_ITEM_OFFSET_INTERVAL_Y * itemPosition, tween(STACK_ANIMATION_DURATION))
             }
-            if (itemPosition == BOTTOM_POSITION) {
+            if (itemPosition == STACK_BOTTOM_POSITION) {
                 launch {
                     alpha.animateTo(1f, tween(STACK_ANIMATION_DURATION))
                 }
@@ -61,7 +62,7 @@ fun <T> Modifier.swipe(
         pointerInput(Unit) {
             val decay = splineBasedDecay<Float>(this)
             coroutineScope {
-                while (itemPosition == TOP_POSITION && canGesture.value) {
+                while (itemPosition == STACK_TOP_POSITION && canGesture.value) {
                     val pointerId = awaitPointerEventScope { awaitFirstDown().id }
                     val velocityTracker = VelocityTracker()
 
@@ -90,7 +91,7 @@ fun <T> Modifier.swipe(
                         }
                         launch {
                             offsetY.animateTo(
-                                targetValue = STACK_INTERVAL_Y * itemPosition,
+                                targetValue = STACK_ITEM_OFFSET_INTERVAL_Y * itemPosition,
                                 initialVelocity = velocityY
                             )
                         }
