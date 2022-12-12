@@ -2,6 +2,7 @@ package com.strayalpaca.android.abox.ui.screens.avsb
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.strayalpaca.android.abox.model.data.DebounceLoadingDialogState
 import com.strayalpaca.android.abox.ui.components.swipeStack.SwipeStackListener
 import com.strayalpaca.android.domain.model.AB
 import com.strayalpaca.android.domain.model.AvsB
@@ -34,13 +35,18 @@ class AvsBViewModel @Inject constructor(
     private val _swipeOrientation = MutableSharedFlow<SwipeOrientation>()
     val swipeOrientation = _swipeOrientation.asSharedFlow()
 
+    private val loadingState = DebounceLoadingDialogState(viewModelScope)
+    val loadingDialogShow = loadingState.getLoadingStateFlow()
+
     init {
         getAvsB()
     }
 
     fun getAvsB() {
         viewModelScope.launch {
+            loadingState.setLoadingDialogStateDebounce(debounceTime = 500, isShow = true)
             val result = useCaseGetAvsB(1)
+            loadingState.setLoadingDialogState(isShow = false)
             ab = result
             ab!!.createFirstRoundContent()
             changeRound()

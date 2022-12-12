@@ -22,10 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
-import com.strayalpaca.android.abox.ui.components.AvsBCard
-import com.strayalpaca.android.abox.ui.components.BackButton
-import com.strayalpaca.android.abox.ui.components.ListDot
-import com.strayalpaca.android.abox.ui.components.RoundNumber
+import com.strayalpaca.android.abox.ui.components.*
 import com.strayalpaca.android.abox.ui.components.swipeStack.SwipeStack
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
 import com.strayalpaca.android.domain.model.SwipeOrientation
@@ -40,9 +37,6 @@ class AvsBActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val currentPosition = viewModel.currentPosition.collectAsState()
-            val currentRound = viewModel.currentABRound.collectAsState()
-            val abContent = viewModel.abContentList.collectAsState()
 
             val aCircleAlpha = remember { Animatable(1f) }
             val bCircleAlpha = remember { Animatable(1f) }
@@ -81,9 +75,15 @@ class AvsBActivity : ComponentActivity() {
 
             ABOXTheme {
                 Box(modifier = Modifier.background(MaterialTheme.colors.background)) {
+                    val loadingDialogShow = viewModel.loadingDialogShow.collectAsState()
+
                     BackButton(modifier = Modifier.align(Alignment.TopStart))
 
                     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+                        val currentPosition = viewModel.currentPosition.collectAsState()
+                        val currentRound = viewModel.currentABRound.collectAsState()
+                        val abContent = viewModel.abContentList.collectAsState()
+
                         val (stack, roundNumber, dotList, aCircle, bCircle) = createRefs()
 
                         Canvas(
@@ -164,6 +164,10 @@ class AvsBActivity : ComponentActivity() {
                                 bottom.linkTo(parent.bottom)
                             }
                         )
+                    }
+
+                    if (loadingDialogShow.value) {
+                        LoadingDialog()
                     }
 
                 }
