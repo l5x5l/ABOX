@@ -20,7 +20,7 @@ class AvsBTest {
     @Test
     fun `After Load AvsB, Amount of AvsB's First round Item is powers of 2`() {
         runTest {
-            val viewModel = AvsBViewModel(UseCaseGetAvsB(AvsBTestRepository()))
+            val viewModel = AvsBViewModel(UseCaseGetAvsB(AvsBTestRepository()), 1)
             viewModel.getAvsB()
             advanceUntilIdle()
 
@@ -33,7 +33,7 @@ class AvsBTest {
     @Test
     fun `After Finish single round, Next Round will be created`() {
         runTest {
-            val viewModel = AvsBViewModel(UseCaseGetAvsB(AvsBTestRepository()))
+            val viewModel = AvsBViewModel(UseCaseGetAvsB(AvsBTestRepository()), 1)
             viewModel.getAvsB()
             advanceUntilIdle()
 

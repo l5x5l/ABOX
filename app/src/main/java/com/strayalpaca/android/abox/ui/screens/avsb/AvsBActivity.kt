@@ -28,10 +28,17 @@ import com.strayalpaca.android.abox.ui.theme.ABOXTheme
 import com.strayalpaca.android.domain.model.SwipeOrientation
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AvsBActivity : ComponentActivity() {
-    private val viewModel: AvsBViewModel by viewModels()
+
+    @Inject
+    lateinit var abViewModelFactory : AvsBViewModel.AbAssistedFactory
+
+    private val viewModel: AvsBViewModel by viewModels {
+        AvsBViewModel.provideFactory(abViewModelFactory, 1)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
