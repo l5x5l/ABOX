@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
+import com.strayalpaca.android.abox.model.const.STACK_BOTTOM_POSITION
 import com.strayalpaca.android.abox.ui.components.PostCard
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
 import com.strayalpaca.android.domain.model.SwipeOrientation
@@ -23,7 +24,7 @@ fun <T> SwipeStack(
     modifier: Modifier = Modifier,
     content: @Composable (Modifier, T) -> Unit
 ) {
-    for (i: Int in 0..BOTTOM_POSITION) {
+    for (i: Int in 0..STACK_BOTTOM_POSITION) {
         if (i < dataList.size) {
             content(
                 modifier
