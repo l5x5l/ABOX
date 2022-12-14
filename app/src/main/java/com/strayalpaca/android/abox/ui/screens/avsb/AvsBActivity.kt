@@ -78,7 +78,7 @@ class AvsBActivity : ComponentActivity() {
                         )
 
                         ListDot(
-                            round = currentRound.value,
+                            amountOfItem = currentRound.value / 2,
                             currentPosition = currentPosition.value,
                             modifier = Modifier.constrainAs(dotList) {
                                 start.linkTo(parent.start)

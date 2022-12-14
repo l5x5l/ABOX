@@ -17,15 +17,17 @@ import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
 @Composable
-fun ListDot(modifier: Modifier = Modifier, round: Int, currentPosition: Int) {
+fun ListDot(modifier: Modifier = Modifier, amountOfItem: Int, currentPosition: Int) {
     val alpha = remember { Animatable(initialValue = 0f) }
     val offsetY = remember { Animatable(initialValue = 0f) }
-    val amountOfItem = remember { mutableStateOf(value = round / 2) }
+    val amountOfDot = remember { mutableStateOf(value = amountOfItem) }
 
-    LaunchedEffect(round) {
+    // ui 에 표시되는 dot 의 개수는 alpha 를 0으로 변경한 이후 변경됩니다.
+    // dot 16->8로 개수 변경시, 16개 알파값 0 -> 8개로 변경 -> 알파값 1로 변경 과정을 거칩니다.
+    LaunchedEffect(amountOfItem) {
         launch {
             alpha.animateTo(targetValue = 0f, animationSpec = tween(500))
-            amountOfItem.value = round / 2
+            amountOfDot.value = amountOfItem
             alpha.animateTo(targetValue = 1f, animationSpec = tween(500))
         }
         launch {
@@ -39,12 +41,12 @@ fun ListDot(modifier: Modifier = Modifier, round: Int, currentPosition: Int) {
         modifier = modifier.alpha(alpha.value).offset { IntOffset(x = 0, y = offsetY.value.roundToInt()) }.padding(vertical = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        for (i in 0 until amountOfItem.value step (8)) {
+        for (i in 0 until amountOfDot.value step (8)) {
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 for (j in 0 until 8) {
                     val index = i + j
-                    if (index < amountOfItem.value) {
-                        key("${amountOfItem.value}_${index}") {
+                    if (index < amountOfDot.value) {
+                        key("${amountOfDot.value}_${index}") {
                             NormalDot(
                                 isCurrentPosition = index == currentPosition,
                                 isPrevPosition = index == (currentPosition - 1)
