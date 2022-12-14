@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.strayalpaca.android.abox.R
 import com.strayalpaca.android.abox.ui.screens.avsb_list.AvsBListActivity
+import com.strayalpaca.android.abox.ui.screens.oxquiz.OxQuizActivity
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
 import com.strayalpaca.android.abox.util.findActivity
 
@@ -127,7 +128,7 @@ fun HomeCategoryList() {
                     stringResource(id = R.string.description_random_category),
                     modifier = Modifier.weight(1f),
                     clickEvent = {
-                        val intent = Intent(activity, AvsBListActivity::class.java)
+                        val intent = Intent(activity, OxQuizActivity::class.java)
                         activity.startActivity(intent)
                     }
                 )

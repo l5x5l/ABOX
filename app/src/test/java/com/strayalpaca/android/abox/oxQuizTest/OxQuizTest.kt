@@ -20,8 +20,8 @@ class OxQuizTest {
     @Test
     fun `After Load OxQuiz, Amount of OxQuizItem is in from 10 to 15`() {
         runTest {
-            val viewModel = OxQuizViewModel(UseCaseGetOxQuiz(OxQuizTestRepository()))
-            viewModel.getOxQuiz(1)
+            val viewModel = OxQuizViewModel(UseCaseGetOxQuiz(OxQuizTestRepository()), 1)
+            viewModel.getOxQuiz()
             advanceUntilIdle()
 
             val temp = viewModel.oxQuizItemList.size
@@ -33,8 +33,8 @@ class OxQuizTest {
     @Test
     fun `After Solve Quiz List, this result applied to OxQuizItem's answerList`() {
         runTest {
-            val viewModel = OxQuizViewModel(UseCaseGetOxQuiz(OxQuizTestRepository()))
-            viewModel.getOxQuiz(1)
+            val viewModel = OxQuizViewModel(UseCaseGetOxQuiz(OxQuizTestRepository()), 1)
+            viewModel.getOxQuiz()
             advanceUntilIdle()
 
             while (viewModel.remainOxQuizItemList.value.isNotEmpty()) {
