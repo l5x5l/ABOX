@@ -21,10 +21,12 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import com.strayalpaca.android.abox.ui.screens.avsb.AvsBActivity
+import com.strayalpaca.android.abox.ui.screens.oxquiz.OxQuizActivity
 import com.strayalpaca.android.abox.util.changeColorStringToInt
 import com.strayalpaca.android.abox.util.findActivity
 import com.strayalpaca.android.abox.util.getTextColorByBackground
 import com.strayalpaca.android.domain.model.Post
+import com.strayalpaca.android.domain.model.PostType
 
 @Composable
 fun PostItem(post: Post) {
@@ -33,8 +35,13 @@ fun PostItem(post: Post) {
     val context = LocalContext.current.findActivity()
 
     ConstraintLayout(modifier = Modifier.wrapContentSize().clickable {
-        val intent = Intent(context, AvsBActivity::class.java)
-        context.startActivity(intent)
+        if (post.postType == PostType.AB) {
+            val intent = Intent(context, AvsBActivity::class.java)
+            context.startActivity(intent)
+        } else {
+            val intent = Intent(context, OxQuizActivity::class.java)
+            context.startActivity(intent)
+        }
     }) {
         val (card, title) = createRefs()
 
