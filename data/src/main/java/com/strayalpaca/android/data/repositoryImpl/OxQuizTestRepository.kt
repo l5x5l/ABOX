@@ -1,5 +1,6 @@
 package com.strayalpaca.android.data.repositoryImpl
 
+import com.strayalpaca.android.domain.model.OXQuizCategory
 import com.strayalpaca.android.domain.model.OXQuizItem
 import com.strayalpaca.android.domain.repository.OxQuizRepository
 
@@ -19,5 +20,16 @@ class OxQuizTestRepository : OxQuizRepository {
         oxQuizItemList.add(OXQuizItem(index = 9, imageUrl = null, quizText = "열번째 퀴즈입니다.", correctAnswer = false, totalAmountOfAnswer = 0, totalAmountOfCorrectAnswer = 0, categoryIndex = categoryIndex))
 
         return oxQuizItemList
+    }
+
+    override suspend fun getOxQuizCategory(): List<OXQuizCategory> {
+        val oxQuizCategoryList = mutableListOf<OXQuizCategory>()
+
+        oxQuizCategoryList.add(OXQuizCategory(index = 0, title = "카테고리1", primaryColor = "#040C0E", updateDate = "", thumbnailUrl = "https://picsum.photos/250/500?random=0", amountOfQuiz = 10))
+        oxQuizCategoryList.add(OXQuizCategory(index = 1, title = "카테고리2", primaryColor = "#000000", updateDate = "", thumbnailUrl = "https://picsum.photos/250/500?random=1", amountOfQuiz = 10))
+        oxQuizCategoryList.add(OXQuizCategory(index = 2, title = "카테고리3", primaryColor = "#FE6E70", updateDate = "", thumbnailUrl = "https://picsum.photos/250/500?random=2", amountOfQuiz = 10))
+        oxQuizCategoryList.add(OXQuizCategory(index = 3, title = "카테고리4", primaryColor = "#5FAEB9", updateDate = "", thumbnailUrl = "https://picsum.photos/250/500?random=3", amountOfQuiz = 10))
+
+        return oxQuizCategoryList
     }
 }

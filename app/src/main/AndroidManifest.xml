@@ -28,6 +28,7 @@
         <activity android:name=".ui.screens.avsb_list.AvsBListActivity"/>
         <activity android:name=".ui.screens.avsb.AvsBActivity"/>
         <activity android:name=".ui.screens.oxquiz.OxQuizActivity"/>
+        <activity android:name=".ui.screens.oxquiz_category.OxQuizCategoryActivity"/>
     </application>
 
 </manifest>
