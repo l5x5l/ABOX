@@ -25,7 +25,7 @@ class OxQuizActivity : ComponentActivity() {
     @Inject
     lateinit var oxQuizViewModelFactory: OxQuizViewModel.OxQuizAssistedFactory
 
-    private val viewModel : OxQuizViewModel by viewModels {
+    private val viewModel: OxQuizViewModel by viewModels {
         OxQuizViewModel.provideFactory(assistedFactory = oxQuizViewModelFactory, 1)
     }
 
@@ -39,13 +39,16 @@ class OxQuizActivity : ComponentActivity() {
 
                     BackButton(modifier = Modifier.align(Alignment.TopStart))
 
-                    SwipeActionCircles(modifier = Modifier.align(Alignment.Center), swipeActionFlow = viewModel.swipeOrientation)
+                    SwipeActionCircles(
+                        modifier = Modifier.align(Alignment.Center),
+                        swipeActionFlow = viewModel.swipeOrientation
+                    )
 
                     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
                         val remainOxQuizItems = viewModel.remainOxQuizItemList.collectAsState()
                         val currentPosition = viewModel.currentPosition.collectAsState()
 
-                        val (stack, dotList) = createRefs()
+                        val (stack, dotList, countNumber) = createRefs()
 
                         Box(modifier = Modifier.constrainAs(stack) {
                             start.linkTo(parent.start)
@@ -59,11 +62,21 @@ class OxQuizActivity : ComponentActivity() {
                                 modifier = Modifier.align(Alignment.Center)
                             ) { modifier, oxQuizItem ->
                                 key(oxQuizItem) {
-                                    OxQuizCard(modifier = modifier ,oxQuizItem = oxQuizItem)
+                                    OxQuizCard(modifier = modifier, oxQuizItem = oxQuizItem)
                                 }
                             }
                         }
 
+                        CountNumber(
+                            totalCount = viewModel.oxQuizItemList.size,
+                            currentCount = (currentPosition.value + 1),
+                            modifier = Modifier.constrainAs(countNumber) {
+                                start.linkTo(parent.start)
+                                end.linkTo(parent.end)
+                                top.linkTo(parent.top)
+                                bottom.linkTo(stack.top)
+                            }
+                        )
 
                         ListDot(
                             amountOfItem = viewModel.oxQuizItemList.size,

@@ -73,7 +73,6 @@ class OxQuizViewModel @AssistedInject constructor(
         val temp = _remainOxQuizItemList.value.toMutableList()
         temp.remove(item)
         _remainOxQuizItemList.value = temp
-        _currentPosition.value++
     }
 
     override fun onSwipeToRight(item: OXQuizItem) {
@@ -81,7 +80,6 @@ class OxQuizViewModel @AssistedInject constructor(
         val temp = _remainOxQuizItemList.value.toMutableList()
         temp.remove(item)
         _remainOxQuizItemList.value = temp
-        _currentPosition.value++
     }
 
     override fun onStackEmpty() {
@@ -90,6 +88,7 @@ class OxQuizViewModel @AssistedInject constructor(
 
     override fun onSwipeAnimationStart(swipeOrientation: SwipeOrientation) {
         viewModelScope.launch {
+            _currentPosition.value += 1
             _swipeOrientation.emit(swipeOrientation)
         }
     }
