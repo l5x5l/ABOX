@@ -10,4 +10,8 @@ class UseCaseGetOxQuizCategory @Inject constructor(
     suspend operator fun invoke() : List<OXQuizCategory> {
         return repository.getOxQuizCategory()
     }
+
+    suspend fun getRandom() : OXQuizCategory {
+        return repository.getRandomOxQuizCategory()
+    }
 }

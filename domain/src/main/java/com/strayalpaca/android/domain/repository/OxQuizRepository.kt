@@ -7,4 +7,6 @@ interface OxQuizRepository {
     suspend fun getOxQuizList(categoryIndex : Int) : List<OXQuizItem>
 
     suspend fun getOxQuizCategory() : List<OXQuizCategory>
+
+    suspend fun getRandomOxQuizCategory() : OXQuizCategory
 }

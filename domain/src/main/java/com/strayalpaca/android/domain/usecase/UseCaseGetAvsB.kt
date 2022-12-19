@@ -10,4 +10,8 @@ class UseCaseGetAvsB @Inject constructor(
     suspend operator fun invoke(AvsBIndex: Int): AvsB {
         return repository.getAvsB(AvsBIndex)
     }
+
+    suspend fun getRandom() : AvsB {
+        return repository.getRandomAvsB()
+    }
 }

@@ -3,6 +3,7 @@ package com.strayalpaca.android.data.repositoryImpl
 import com.strayalpaca.android.domain.model.AvsB
 import com.strayalpaca.android.domain.model.AvsBItem
 import com.strayalpaca.android.domain.repository.AvsBRepository
+import kotlin.random.Random
 
 class AvsBTestRepository : AvsBRepository {
     override suspend fun getAvsBList(pageIdx: Int, pageSize: Int): List<AvsB> {
@@ -56,5 +57,10 @@ class AvsBTestRepository : AvsBRepository {
                 AvsBItem(index = 17, imageUrl = "https://picsum.photos/500/500?random=17", AvsBIndex = AvsBIndex)
             )
         )
+    }
+
+    override suspend fun getRandomAvsB(): AvsB {
+        val randomNumber = Random.nextInt(5)
+        return getAvsB(randomNumber)
     }
 }

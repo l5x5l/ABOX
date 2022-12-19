@@ -20,6 +20,7 @@ import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
+import com.strayalpaca.android.abox.model.const.INTENT_KEY_POST_INDEX
 import com.strayalpaca.android.abox.ui.screens.avsb.AvsBActivity
 import com.strayalpaca.android.abox.ui.screens.oxquiz.OxQuizActivity
 import com.strayalpaca.android.abox.util.changeColorStringToInt
@@ -35,13 +36,19 @@ fun PostItem(post: Post) {
     val context = LocalContext.current.findActivity()
 
     ConstraintLayout(modifier = Modifier.wrapContentSize().clickable {
-        if (post.postType == PostType.AB) {
-            val intent = Intent(context, AvsBActivity::class.java)
-            context.startActivity(intent)
-        } else {
-            val intent = Intent(context, OxQuizActivity::class.java)
-            context.startActivity(intent)
+        val intent = when(post.postType) {
+            PostType.AB -> {
+                Intent(context, AvsBActivity::class.java)
+            }
+            PostType.OX -> {
+                Intent(context, OxQuizActivity::class.java)
+            }
+            else -> {
+                throw IllegalAccessException("this postType are not handled yet")
+            }
         }
+        intent.putExtra(INTENT_KEY_POST_INDEX, post.index)
+        context.startActivity(intent)
     }) {
         val (card, title) = createRefs()
 

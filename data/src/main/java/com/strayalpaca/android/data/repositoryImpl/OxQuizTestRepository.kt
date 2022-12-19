@@ -3,6 +3,7 @@ package com.strayalpaca.android.data.repositoryImpl
 import com.strayalpaca.android.domain.model.OXQuizCategory
 import com.strayalpaca.android.domain.model.OXQuizItem
 import com.strayalpaca.android.domain.repository.OxQuizRepository
+import kotlin.random.Random
 
 class OxQuizTestRepository : OxQuizRepository {
     override suspend fun getOxQuizList(categoryIndex: Int) : List<OXQuizItem> {
@@ -31,5 +32,10 @@ class OxQuizTestRepository : OxQuizRepository {
         oxQuizCategoryList.add(OXQuizCategory(index = 3, title = "카테고리4", primaryColor = "#5FAEB9", updateDate = "", thumbnailUrl = "https://picsum.photos/250/500?random=3", amountOfQuiz = 10))
 
         return oxQuizCategoryList
+    }
+
+    override suspend fun getRandomOxQuizCategory(): OXQuizCategory {
+        val randomNumber = Random.nextInt(5)
+        return OXQuizCategory(index = randomNumber, title = "카테고리${randomNumber}", primaryColor = "#FE6E70", updateDate = "", thumbnailUrl = "https://picsum.photos/250/500?random=2", amountOfQuiz = 10)
     }
 }

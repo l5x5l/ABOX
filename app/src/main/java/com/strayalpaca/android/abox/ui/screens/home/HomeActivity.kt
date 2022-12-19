@@ -1,5 +1,6 @@
 package com.strayalpaca.android.abox.ui.screens.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,14 +16,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
 import com.strayalpaca.android.abox.R
+import com.strayalpaca.android.abox.model.const.INTENT_KEY_POST_INDEX
 import com.strayalpaca.android.abox.ui.components.HomeCategoryList
 import com.strayalpaca.android.abox.ui.components.PostItem
+import com.strayalpaca.android.abox.ui.screens.avsb.AvsBActivity
+import com.strayalpaca.android.abox.ui.screens.oxquiz.OxQuizActivity
+import com.strayalpaca.android.domain.model.PostType
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeActivity : ComponentActivity() {
@@ -30,6 +37,23 @@ class HomeActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.randomPost.collect { randomPost ->
+                    val intent = when(randomPost.postType) {
+                        PostType.AB -> {
+                            Intent(this@HomeActivity, AvsBActivity::class.java)
+                        }
+                        PostType.OX -> {
+                            Intent(this@HomeActivity, OxQuizActivity::class.java)
+                        }
+                    }
+                    intent.putExtra(INTENT_KEY_POST_INDEX, randomPost.index)
+                    startActivity(intent)
+                }
+            }
+        }
 
         setContent {
             val scrollState = rememberScrollState()
@@ -52,7 +76,7 @@ class HomeActivity : ComponentActivity() {
                         colorFilter = ColorFilter.tint(MaterialTheme.colors.onBackground)
                     )
 
-                    HomeCategoryList()
+                    HomeCategoryList(viewModel::getRandomPost)
 
                     Text(
                         text = stringResource(id = R.string.weekly_top_10),
