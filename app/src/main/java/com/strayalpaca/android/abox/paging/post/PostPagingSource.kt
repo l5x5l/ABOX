@@ -2,6 +2,7 @@ package com.strayalpaca.android.abox.paging.post
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.strayalpaca.android.abox.model.const.PAGING_ITEM_PER_PAGE
 import com.strayalpaca.android.domain.model.Post
 import java.lang.Exception
 
@@ -19,7 +20,7 @@ class PostPagingSource(
         return try {
             val pageIndex = params.key ?: 0
             val response = loadNext(pageIndex, params.loadSize)
-            val nextKey = if (response.isEmpty()) null else pageIndex + 1
+            val nextKey = if (response.isEmpty()) null else pageIndex + (params.loadSize / PAGING_ITEM_PER_PAGE)
             val prevKey = if (pageIndex == 0) null else pageIndex - 1
             LoadResult.Page(data = response, prevKey = prevKey, nextKey = nextKey)
         } catch (e : Exception) {
