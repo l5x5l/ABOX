@@ -11,7 +11,7 @@ class AvsBTestRepository : AvsBRepository {
         for (i: Int in 1..pageSize) {
             temp.add(
                 AvsB(
-                    index = pageIdx * pageSize,
+                    index = pageIdx * pageSize + i,
                     title = "${pageIdx * pageSize + i}번째 post",
                     updateDate = "",
                     thumbnailUrl = "https://picsum.photos/seed/picsum/500/500",
