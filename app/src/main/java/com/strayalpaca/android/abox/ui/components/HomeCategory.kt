@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.strayalpaca.android.abox.R
 import com.strayalpaca.android.abox.ui.screens.avsb_list.AvsBListActivity
+import com.strayalpaca.android.abox.ui.screens.bookmark.BookmarkActivity
 import com.strayalpaca.android.abox.ui.screens.oxquiz_category.OxQuizCategoryActivity
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
 import com.strayalpaca.android.abox.util.findActivity
@@ -135,7 +136,7 @@ fun HomeCategoryList(randomCategoryClickEvent : () -> Unit) {
                     stringResource(id = R.string.description_bookmark_category),
                     modifier = Modifier.weight(1f),
                     clickEvent = {
-                        val intent = Intent(activity, AvsBListActivity::class.java)
+                        val intent = Intent(activity, BookmarkActivity::class.java)
                         activity.startActivity(intent)
                     }
                 )
