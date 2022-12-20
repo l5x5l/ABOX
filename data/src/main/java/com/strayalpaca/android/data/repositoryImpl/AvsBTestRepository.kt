@@ -63,4 +63,21 @@ class AvsBTestRepository : AvsBRepository {
         val randomNumber = Random.nextInt(5)
         return getAvsB(randomNumber)
     }
+
+    override suspend fun getBookmarkAvsBList(pageIdx: Int, pageSize: Int): List<AvsB> {
+        val temp = mutableListOf<AvsB>()
+        for (i: Int in 1..pageSize) {
+            temp.add(
+                AvsB(
+                    index = pageIdx * pageSize,
+                    title = "${pageIdx * pageSize + i}번째 북마크",
+                    updateDate = "",
+                    thumbnailUrl = "https://picsum.photos/seed/picsum/500/500",
+                    isLike = false,
+                    primaryColor = "#000000"
+                )
+            )
+        }
+        return temp
+    }
 }
