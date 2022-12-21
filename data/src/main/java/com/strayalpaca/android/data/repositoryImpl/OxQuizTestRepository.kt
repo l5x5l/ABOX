@@ -38,4 +38,9 @@ class OxQuizTestRepository : OxQuizRepository {
         val randomNumber = Random.nextInt(5)
         return OXQuizCategory(index = randomNumber, title = "카테고리${randomNumber}", primaryColor = "#FE6E70", updateDate = "", thumbnailUrl = "https://picsum.photos/250/500?random=2", amountOfQuiz = 10)
     }
+
+    override suspend fun sendSolveData(solvedQuizData : List<OXQuizItem>) {
+        // DTO 로 매핑한 후 서버 전달 (서버 구현 이후 추후 작성)
+        return
+    }
 }

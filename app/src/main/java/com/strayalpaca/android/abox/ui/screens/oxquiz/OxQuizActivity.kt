@@ -68,7 +68,7 @@ class OxQuizActivity : ComponentActivity() {
                         }
 
                         CountNumber(
-                            totalCount = viewModel.oxQuizItemList.size,
+                            totalCount = viewModel.amountOfQuizItem,
                             currentCount = (currentPosition.value + 1),
                             modifier = Modifier.constrainAs(countNumber) {
                                 start.linkTo(parent.start)
@@ -79,7 +79,7 @@ class OxQuizActivity : ComponentActivity() {
                         )
 
                         ListDot(
-                            amountOfItem = viewModel.oxQuizItemList.size,
+                            amountOfItem = viewModel.amountOfQuizItem,
                             currentPosition = currentPosition.value,
                             modifier = Modifier.constrainAs(dotList) {
                                 start.linkTo(parent.start)

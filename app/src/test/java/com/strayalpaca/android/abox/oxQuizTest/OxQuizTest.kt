@@ -4,13 +4,16 @@ import com.strayalpaca.android.abox.MainCoroutineRule
 import com.strayalpaca.android.abox.ui.screens.oxquiz.OxQuizViewModel
 import com.strayalpaca.android.data.repositoryImpl.OxQuizTestRepository
 import com.strayalpaca.android.domain.usecase.UseCaseGetOxQuiz
+import com.strayalpaca.android.domain.usecase.UseCaseSendOxQuizSolveData
+import io.mockk.coEvery
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Rule
 import org.junit.Test
+import java.net.SocketTimeoutException
 import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class OxQuizTest {
     @get:Rule
@@ -18,37 +21,19 @@ class OxQuizTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `After Load OxQuiz, Amount of OxQuizItem is in from 10 to 15`() {
+    fun `After Sending solve data request throw SocketTimeoutException, show ErrorDialog`() {
         runTest {
-            val viewModel = OxQuizViewModel(UseCaseGetOxQuiz(OxQuizTestRepository()), 1)
+            val mockRepository : OxQuizTestRepository = mockk<OxQuizTestRepository>(relaxed = true)
+            coEvery { mockRepository.sendSolveData(listOf()) } throws SocketTimeoutException("time out")
+
+            val viewModel = OxQuizViewModel(UseCaseGetOxQuiz(mockRepository), UseCaseSendOxQuizSolveData(mockRepository), 1)
             viewModel.getOxQuiz()
             advanceUntilIdle()
 
-            val temp = viewModel.oxQuizItemList.size
-            assertTrue { temp in 10..15 }
-        }
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `After Solve Quiz List, this result applied to OxQuizItem's answerList`() {
-        runTest {
-            val viewModel = OxQuizViewModel(UseCaseGetOxQuiz(OxQuizTestRepository()), 1)
-            viewModel.getOxQuiz()
+            viewModel.sendSolveData()
             advanceUntilIdle()
 
-            while (viewModel.remainOxQuizItemList.value.isNotEmpty()) {
-                viewModel.onSwipeToLeft(viewModel.remainOxQuizItemList.value[0])
-            }
-            viewModel.onStackEmpty()
-
-            var answerCount = 0
-            for (item in viewModel.oxQuizItemList) {
-                answerCount += item.totalAmountOfAnswer
-            }
-
-            assertEquals(answerCount, viewModel.oxQuizItemList.size)
+            assertEquals(viewModel.isShowErrorDialog.value, true)
         }
     }
-
 }

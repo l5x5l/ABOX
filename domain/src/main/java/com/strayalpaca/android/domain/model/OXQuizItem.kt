@@ -1,6 +1,6 @@
 package com.strayalpaca.android.domain.model
 
-class OXQuizItem(
+data class OXQuizItem(
     val index : Int,
     val imageUrl : String?,
     val quizText : String,
@@ -11,7 +11,7 @@ class OXQuizItem(
     val answerDescription : String ?= null,
     var userAnswer : Boolean ?= null
 ) {
-    fun submitAnswer(answer : Boolean) {
+    fun applyAnswer(answer : Boolean) {
         userAnswer = answer
         totalAmountOfAnswer++
         if (userAnswer == correctAnswer) {

@@ -8,17 +8,22 @@ import com.strayalpaca.android.abox.ui.components.swipeStack.SwipeStackListener
 import com.strayalpaca.android.domain.model.OXQuizItem
 import com.strayalpaca.android.domain.model.SwipeOrientation
 import com.strayalpaca.android.domain.usecase.UseCaseGetOxQuiz
+import com.strayalpaca.android.domain.usecase.UseCaseSendOxQuizSolveData
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 class OxQuizViewModel @AssistedInject constructor(
     private val useCaseGetOxQuiz: UseCaseGetOxQuiz,
+    private val useCaseSendOxQuizSolveData: UseCaseSendOxQuizSolveData,
     @Assisted private val oxQuizCategoryIdx: Int
 ) : ViewModel(), SwipeStackListener<OXQuizItem> {
 
@@ -39,7 +44,11 @@ class OxQuizViewModel @AssistedInject constructor(
         }
     }
 
-    val oxQuizItemList = mutableListOf<OXQuizItem>()
+    // 이 데이터가 과연 진짜 필요할지 고민해볼것
+    private val originalOxQuizItemList = mutableListOf<OXQuizItem>()
+    val amountOfQuizItem get() = originalOxQuizItemList.size
+
+    private val solvedOxQuizItemList = mutableListOf<OXQuizItem>()
 
     private val _remainOxQuizItemList = MutableStateFlow<List<OXQuizItem>>(listOf())
     val remainOxQuizItemList = _remainOxQuizItemList.asStateFlow()
@@ -53,6 +62,17 @@ class OxQuizViewModel @AssistedInject constructor(
     private val _swipeOrientation = MutableSharedFlow<SwipeOrientation>()
     val swipeOrientation = _swipeOrientation.asSharedFlow()
 
+    private val _isShowErrorDialog = MutableStateFlow(false)
+    val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
+
+    private val exceptionHandler = CoroutineExceptionHandler{ _, throwable ->
+        when(throwable) {
+            is IOException -> {
+                _isShowErrorDialog.value = true
+            }
+        }
+    }
+
     init {
         getOxQuiz()
     }
@@ -63,20 +83,28 @@ class OxQuizViewModel @AssistedInject constructor(
             val result = useCaseGetOxQuiz(oxQuizCategoryIndex = oxQuizCategoryIdx)
             loadingState.setLoadingDialogState(isShow = false)
 
-            oxQuizItemList.addAll(result)
+            originalOxQuizItemList.addAll(result)
             _remainOxQuizItemList.value = result
         }
     }
 
+    fun sendSolveData() {
+        viewModelScope.launch(Dispatchers.Main + exceptionHandler) {
+            useCaseSendOxQuizSolveData(solvedOxQuizItemList)
+        }
+    }
+
     override fun onSwipeToLeft(item: OXQuizItem) {
-        item.submitAnswer(answer = true)
+        item.applyAnswer(answer = true)
+        solvedOxQuizItemList.add(item.copy())
         val temp = _remainOxQuizItemList.value.toMutableList()
         temp.remove(item)
         _remainOxQuizItemList.value = temp
     }
 
     override fun onSwipeToRight(item: OXQuizItem) {
-        item.submitAnswer(answer = false)
+        item.applyAnswer(answer = false)
+        solvedOxQuizItemList.add(item.copy())
         val temp = _remainOxQuizItemList.value.toMutableList()
         temp.remove(item)
         _remainOxQuizItemList.value = temp
