@@ -12,4 +12,7 @@
 
     <string name="weekly_top_10">이번주 Top 10!</string>
     <string name="new_AvsB">새로 등록된 AvsB</string>
+
+    <string name="toggle_show_description_of_quiz">설명 보기/숨기기</string>
+    <string name="go_back">돌아가기</string>
 </resources>
