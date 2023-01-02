@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.strayalpaca.android.abox.model.data.DebounceLoadingDialogState
+import com.strayalpaca.android.abox.model.data.MutableEventFlow
+import com.strayalpaca.android.abox.model.data.asEventFlow
 import com.strayalpaca.android.abox.ui.components.swipeStack.SwipeStackListener
 import com.strayalpaca.android.domain.model.OXQuizItem
 import com.strayalpaca.android.domain.model.SwipeOrientation
@@ -48,7 +50,7 @@ class OxQuizViewModel @AssistedInject constructor(
     private val originalOxQuizItemList = mutableListOf<OXQuizItem>()
     val amountOfQuizItem get() = originalOxQuizItemList.size
 
-    private val solvedOxQuizItemList = mutableListOf<OXQuizItem>()
+    val solvedOxQuizItemList = arrayListOf<OXQuizItem>()
 
     private val _remainOxQuizItemList = MutableStateFlow<List<OXQuizItem>>(listOf())
     val remainOxQuizItemList = _remainOxQuizItemList.asStateFlow()
@@ -65,6 +67,10 @@ class OxQuizViewModel @AssistedInject constructor(
     private val _isShowErrorDialog = MutableStateFlow(false)
     val isShowErrorDialog = _isShowErrorDialog.asStateFlow()
 
+    private val _solveQuizComplete = MutableEventFlow<Boolean>()
+    val solveQuizComplete = _solveQuizComplete.asEventFlow()
+
+    // 팩토리 패턴으로 CoroutineExceptionHandler 생성하는거 고려해보기
     private val exceptionHandler = CoroutineExceptionHandler{ _, throwable ->
         when(throwable) {
             is IOException -> {
@@ -111,7 +117,9 @@ class OxQuizViewModel @AssistedInject constructor(
     }
 
     override fun onStackEmpty() {
-
+        viewModelScope.launch {
+            _solveQuizComplete.emit(true)
+        }
     }
 
     override fun onSwipeAnimationStart(swipeOrientation: SwipeOrientation) {

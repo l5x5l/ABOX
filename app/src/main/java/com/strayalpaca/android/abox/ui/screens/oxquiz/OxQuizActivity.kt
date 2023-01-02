@@ -1,5 +1,6 @@
 package com.strayalpaca.android.abox.ui.screens.oxquiz
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -13,10 +14,16 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import com.strayalpaca.android.abox.model.const.INTENT_KEY_SOLVED_OX_QUIZ
 import com.strayalpaca.android.abox.ui.components.*
 import com.strayalpaca.android.abox.ui.components.swipeStack.SwipeStack
+import com.strayalpaca.android.abox.ui.screens.oxquiz_result.OxQuizResultActivity
 import com.strayalpaca.android.abox.ui.theme.ABOXTheme
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -31,6 +38,19 @@ class OxQuizActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.solveQuizComplete.collect { isComplete ->
+                    if (isComplete) {
+                        val intent = Intent(this@OxQuizActivity, OxQuizResultActivity::class.java)
+                        intent.putExtra(INTENT_KEY_SOLVED_OX_QUIZ, viewModel.solvedOxQuizItemList)
+                        startActivity(intent)
+                        finish()
+                    }
+                }
+            }
+        }
 
         setContent {
             ABOXTheme {

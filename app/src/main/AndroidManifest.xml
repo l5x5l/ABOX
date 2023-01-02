@@ -29,6 +29,7 @@
         <activity android:name=".ui.screens.avsb.AvsBActivity"/>
         <activity android:name=".ui.screens.oxquiz.OxQuizActivity"/>
         <activity android:name=".ui.screens.oxquiz_category.OxQuizCategoryActivity"/>
+        <activity android:name=".ui.screens.oxquiz_result.OxQuizResultActivity"/>
         <activity android:name=".ui.screens.bookmark.BookmarkActivity"/>
     </application>
 

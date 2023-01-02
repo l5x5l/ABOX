@@ -24,6 +24,9 @@ import com.strayalpaca.android.domain.model.OXQuizItem
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 import com.strayalpaca.android.abox.R
+import com.strayalpaca.android.abox.ui.components.OxQuizCard
+import com.strayalpaca.android.abox.ui.components.PostCard
+import com.strayalpaca.android.abox.ui.components.viewPager.Pager
 
 @AndroidEntryPoint
 class OxQuizResultActivity : ComponentActivity() {
@@ -57,7 +60,11 @@ class OxQuizResultActivity : ComponentActivity() {
                             top.linkTo(parent.top)
                             bottom.linkTo(parent.bottom)
                         }) {
-
+                            Pager(items = viewModel.oxQuizList, onItemSelect = { position, _ ->
+                                viewModel.setCurrentPosition(position)
+                            }) { quiz ->
+                                OxQuizCard(oxQuizItem = quiz)
+                            }
                         }
 
                         Row(
@@ -94,12 +101,16 @@ class OxQuizResultActivity : ComponentActivity() {
                         ) {
                             Text(
                                 text = stringResource(id = R.string.toggle_show_description_of_quiz),
-                                modifier = Modifier.padding(24.dp).weight(1f),
+                                modifier = Modifier
+                                    .padding(24.dp)
+                                    .weight(1f),
                                 textAlign = TextAlign.Center
                             )
                             Text(
                                 text = stringResource(id = R.string.go_back),
-                                modifier = Modifier.padding(24.dp).weight(1f),
+                                modifier = Modifier
+                                    .padding(24.dp)
+                                    .weight(1f),
                                 textAlign = TextAlign.Center
                             )
                         }
@@ -125,7 +136,9 @@ fun OxQuizResultActivityPreview() {
                     top.linkTo(parent.top)
                     bottom.linkTo(parent.bottom)
                 }) {
-
+                    Pager(items = listOf(1, 2, 3, 4, 5, 6, 7)) { quiz ->
+                        PostCard()
+                    }
                 }
 
                 Row(
@@ -180,12 +193,16 @@ fun OxQuizResultActivityPreview() {
                 ) {
                     Text(
                         text = stringResource(id = R.string.toggle_show_description_of_quiz),
-                        modifier = Modifier.padding(24.dp).weight(1f),
+                        modifier = Modifier
+                            .padding(24.dp)
+                            .weight(1f),
                         textAlign = TextAlign.Center
                     )
                     Text(
                         text = stringResource(id = R.string.go_back),
-                        modifier = Modifier.padding(24.dp).weight(1f),
+                        modifier = Modifier
+                            .padding(24.dp)
+                            .weight(1f),
                         textAlign = TextAlign.Center
                     )
                 }

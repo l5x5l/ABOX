@@ -35,4 +35,8 @@ class OxQuizResultViewModel @AssistedInject constructor(
     fun getAnswerResultList() : List<Boolean> {
         return oxQuizList.map{ quiz -> quiz.userAnswer == quiz.correctAnswer }
     }
+
+    fun setCurrentPosition(position : Int) {
+        _currentPosition.value = position
+    }
 }
