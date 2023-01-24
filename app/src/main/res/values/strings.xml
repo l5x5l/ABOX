@@ -15,4 +15,6 @@
 
     <string name="toggle_show_description_of_quiz">설명 보기/숨기기</string>
     <string name="go_back">돌아가기</string>
+
+    <string name="empty_answer_description">문제 출제자가 이 문제에 대한 해답을 작성하지 않았어요</string>
 </resources>
