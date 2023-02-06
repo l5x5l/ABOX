@@ -38,7 +38,7 @@ class AvsBViewModel @AssistedInject constructor(
         }
     }
 
-    var ab: AvsB? = null
+    lateinit var ab: AvsB
 
     private val _abContentList = MutableStateFlow<List<AvsBContent>>(listOf())
     val abContentList = _abContentList.asStateFlow()
@@ -65,25 +65,26 @@ class AvsBViewModel @AssistedInject constructor(
             val result = useCaseGetAvsB(abIndex)
             loadingState.setLoadingDialogState(isShow = false)
             ab = result
-            ab!!.createFirstRoundContent()
+            ab.createFirstRoundContent()
+            _abContentList.value = ab.abContentList
             changeRound()
         }
     }
 
     override fun onSwipeToLeft(item: AvsBContent) {
         item.vote = AB.A
-        ab!!.addVoteData(item)
+        ab.addVoteData(item)
         _currentPosition.value += 1
     }
 
     override fun onSwipeToRight(item: AvsBContent) {
         item.vote = AB.B
-        ab!!.addVoteData(item)
+        ab.addVoteData(item)
         _currentPosition.value += 1
     }
 
     override fun onStackEmpty() {
-        ab!!.createNextRoundContent()
+        ab.createNextRoundContent()
         changeRound()
     }
 
@@ -94,8 +95,7 @@ class AvsBViewModel @AssistedInject constructor(
     }
 
     private fun changeRound() {
-        _abContentList.value = ab!!.abContentList
-        _currentABRound.value = ab!!.currentRound
+        _currentABRound.value = ab.currentRound
         _currentPosition.value = 0
     }
 }
