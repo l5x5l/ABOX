@@ -47,6 +47,7 @@ class SplashActivity : ComponentActivity() {
             delay(1500)
             val intent = Intent(this@SplashActivity, HomeActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 }
